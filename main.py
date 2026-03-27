@@ -91,3 +91,36 @@ async def human_respond(task_id: int, decision: str):
 
 from hitl_engine import router as hitl_router
 app.include_router(hitl_router)
+
+from hitl_engine import get_discord_buttons, BASE_URL
+
+@app.post("/hitl/request", tags=["Discord 1"])
+async def create_hitl_request(task: HITLTask):
+    with Session(engine) as session:
+        session.add(task)
+        session.commit()
+        session.refresh(task)
+        
+        app_url, rej_url = get_discord_buttons(task.id)
+        
+        # Smart Routing Logic
+        # 1. Πάντα στο Discord με Buttons
+        discord_msg = {
+            "content": f"🚨 **New HITL Request** (#{task.id})\n"
+                       f"**Agent:** `{task.agent_id}`\n"
+                       f"**Context:** {task.context}\n\n"
+                       f"✅ [APPROVE]({app_url})  |  ❌ [REJECT]({rej_url})"
+        }
+        
+        async with httpx.AsyncClient() as client:
+            await client.post(DISCORD_WEBHOOK_URL, json=discord_msg)
+            
+            # 2. Αν είναι High Urgency, στείλε ΚΑΙ στο Mobile (ntfy)
+            if task.urgency.lower() == "high":
+                await broadcast_to_ntfy(
+                    task.agent_id,
+                    task.context, 
+                    task_id=task.id, 
+                    base_url=BASE_URL
+                )
+    return {"status": "dispatched", "task_id": task.id}
