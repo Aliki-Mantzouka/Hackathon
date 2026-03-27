@@ -1,51 +1,48 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 import httpx
 
 app = FastAPI()
 
-# VIBER SETTINGS
-VIBER_TOKEN = "YOUR_VIBER_TOKEN"
+# ΡΥΘΜΙΣΕΙΣ (Βάλε τα δικά σου στοιχεία εδώ)
+VIBER_TOKEN = "YOUR_VIBER_TOKEN"  # Άφησέ το έτσι αν δεν έχεις πάρει ακόμα
 MY_VIBER_ID = "YOUR_VIBER_ID"
+NTFY_TOPIC = "nodashackathon"  # Αυτό που άνοιξες στο κινητό σου
 
 @app.get("/")
 def home():
-    return {"message": "HITL Layer is Online!"}
+    return {"message": "Multi-Channel HITL Gateway is Online!"}
 
 @app.post("/agent-input")
 async def receive_from_agent(data: dict):
-    """
-    Endpoint που δέχεται αιτήματα από AI Agents.
-    Παράδειγμα JSON: {"content": "Έγκριση πληρωμής 50€", "urgency": "high"}
-    """
-    content = data.get("content", "No content provided")
+    content = data.get("content", "Human input required")
     urgency = data.get("urgency", "normal")
+    message = f"🚨 [{urgency.upper()}]: {content}"
 
-    print(f"Received HITL request: {content} (Urgency: {urgency})")
-
-    # Routing στο Viber API
-    viber_url = "https://chatapi.viber.com/pa/send_message"
-    headers = {"X-Viber-Auth-Token": VIBER_TOKEN}
-    
-    payload = {
-        "receiver": MY_VIBER_ID,
-        "min_api_version": 1,
-        "sender": {"name": "HITL Gateway"},
-        "type": "text",
-        "text": f"🔔 [HITL {urgency.upper()}]: {content}"
-    }
+    results = {}
 
     async with httpx.AsyncClient() as client:
-        # Το Gateway κάνει το 'Forward to Human' που ζητάει το MVP
-        response = await client.post(viber_url, json=payload, headers=headers)
-    
-    return {
-        "gateway_status": "forwarded",
-        "viber_status": response.json()
-    }
+        # 1. ΑΠΟΣΤΟΛΗ ΣΤΟ NTFY (Το σίγουρο)
+        try:
+            ntfy_res = await client.post(f"https://ntfy.sh/{NTFY_TOPIC}", data=message.encode('utf-8'))
+            results["ntfy"] = "Success" if ntfy_res.status_code == 200 else "Failed"
+        except Exception as e:
+            results["ntfy"] = f"Error: {str(e)}"
 
-# Endpoint για να λαμβάνουμε την απάντηση από το Viber (Webhook)
-@app.post("/viber-webhook")
-async def viber_webhook(request: Request):
-    viber_data = await request.json()
-    print("Received from Viber:", viber_data)
-    return {"status": "ok"}
+        # 2. ΑΠΟΣΤΟΛΗ ΣΤΟ VIBER (Μόνο αν υπάρχει Token)
+        if VIBER_TOKEN != "YOUR_VIBER_TOKEN":
+            viber_url = "https://chatapi.viber.com/pa/send_message"
+            viber_payload = {
+                "receiver": MY_VIBER_ID,
+                "type": "text",
+                "sender": {"name": "HITL Gateway"},
+                "text": message
+            }
+            try:
+                viber_res = await client.post(viber_url, json=viber_payload, headers={"X-Viber-Auth-Token": VIBER_TOKEN})
+                results["viber"] = viber_res.json()
+            except Exception as e:
+                results["viber"] = f"Error: {str(e)}"
+        else:
+            results["viber"] = "Skipped (No Token provided)"
+
+    return {"status": "Processing complete", "channels": results}
