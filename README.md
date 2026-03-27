@@ -25,6 +25,6 @@
 * **Email (Gmail)**: Χρήση **16-ψήφιου App Password** (όχι του κανονικού κωδικού) για την αποστολή διαδραστικών HTML emails.
 
 ---
-![Hackathon-Email](\hackathon\hackathon-email.gif)
-![Hackathon NTFY](\hackathon\hackathon-ntfy.gif)
-![Hachathon Discord](\hackathon\hackathon-discord.gif)
+![Hackathon-Email](\hackathon\images\hackathon-email.gif)
+![Hackathon NTFY](\hackathon\images\hackathon-ntfy.gif)
+![Hachathon Discord](\hackathon\images\hackathon-discord.gif)
