@@ -25,32 +25,6 @@
 * **Email (Gmail)**: Χρήση **16-ψήφιου App Password** (όχι του κανονικού κωδικού) για την αποστολή διαδραστικών HTML emails.
 
 ---
-
-<ul>Οδηγίες Εγκατάστασης & Εκτέλεσης
-Εκκίνηση του Tunnel:
-
-Bash
-ngrok http 8001
-Αντιγράψτε το https://... URL που θα εμφανιστεί στο πεδίο Forwarding.
-
-Παραμετροποίηση:
-
-Στο αρχείο hitl_engine.py, ενημερώστε τη μεταβλητή BASE_URL με το URL του ngrok.
-
-Στο αρχείο email_service.py, βεβαιωθείτε ότι το SENDER_PASSWORD είναι το σωστό App Password χωρίς κενά.
-
-Εκτέλεση του Gateway:
-
-Bash
-uvicorn main:app --reload --port 8001
-Εκτέλεση του Agent:
-Βεβαιωθείτε ότι ο AI Agent εκτελείται (π.χ. στην πόρτα 8002) για να λαμβάνει τα callbacks των αποφάσεων.
-
-<ul>Τεχνική Αρχιτεκτονική
-Persistence: Χρήση SQLite για την αποθήκευση της κατάστασης (Pending/Approved/Rejected) κάθε αιτήματος.
-
-Smart Routing: Αυτόματη κλιμάκωση ειδοποιήσεων. Τα "High Urgency" αιτήματα προωθούνται ταυτόχρονα σε όλα τα κανάλια.
-
-Interactive Approvals: Η έγκριση γίνεται μέσω HTTP GET requests που πυροδοτούνται από τα κουμπιά στις εφαρμογές, ενημερώνοντας άμεσα τη βάση δεδομένων.
-
-Audit Dashboard: Μια web σελίδα που απεικονίζει σε πραγματικό χρόνο το ιστορικό όλων των αλληλεπιδράσεων.
+![Hackathon-Email](\hackathon\hackathon-email.gif)
+![Hackathon NTFY](\hackathon\hackathon-ntfy.gif)
+![Hachathon Discord](\hackathon\hackathon-discord.gif)
