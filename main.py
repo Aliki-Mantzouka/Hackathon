@@ -7,6 +7,13 @@ import httpx
 
 from database import engine, HITLTask, SQLModel
 
+#mail
+#SMTP_SERVER = "smtp.gmail.com"
+#SMTP_PORT = 587
+#SENDER_EMAIL = "evavioleti04@gmail.com"
+#SENDER_PASSWORD = "your-app-password" # Όχι ο κανονικός κωδικός!
+#ADMIN_EMAIL = "manager-email@example.com"
+
 # 2. Μοντέλο για το Swagger (Μόνο τα πεδία που θέλεις να συμπληρώνεις)
 class NotificationInput(BaseModel):
     agent_id: str
