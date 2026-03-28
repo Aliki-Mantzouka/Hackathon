@@ -42,8 +42,8 @@ async def custom_swagger_ui_html():
     )
 
 # --- ΡΥΘΜΙΣΕΙΣ ---
-SENDER_EMAIL = "evavioleti04@gmail.com"
-SENDER_PASSWORD = "rvgm psaf yxod geqz"
+SENDER_EMAIL = "your email"
+SENDER_PASSWORD = "your 16-digit app password"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1487051436456939620/usdfzS6VGQ2cbGtJsGlP5MblxJdcWiN58QNkGBTwGn6ivn-aIffdXJVrnmVvzbEZ3yrc"
