@@ -1,28 +1,23 @@
-# Hackathon
 # 🤖 Multi-Channel HITL Gateway
 
-### *Human-in-the-Loop Governance for AI Agents*
+Human-in-the-Loop Governance for AI Agents
+A work-in-progress Human-in-the-Loop (HITL) system that enables AI Agents to request human approval via multiple interactive channels (Discord, ntfy, Email). The system ensures Governance and a robust Audit Trail for critical business decisions.
 
-Ένα ημιτελές σύστημα **Human-in-the-Loop (HITL)** που επιτρέπει σε AI Agents να ζητούν ανθρώπινη έγκριση μέσω πολλαπλών διαδραστικών καναλιών (**Discord**, **ntfy**, **Email**). Το σύστημα διασφαλίζει το **Governance** και το **Audit Trail** σε κρίσιμες επιχειρηματικές αποφάσεις.
+# 📋 Prerequisites
+To successfully execute the project, the following must be met:
 
----
+# 1. Software Environment
+Python 3.10+: Installation in a virtual environment (venv) is required.
+Dependencies: Install the necessary packages: fastapi, uvicorn, sqlmodel, httpx.
 
-## 📋 Προϋποθέσεις (Prerequisites)
+# 2. Network Infrastructure (ngrok)
+Verified Account: An ngrok account and Authtoken installation are required.
+Active Tunneling: ngrok must be running on port 8001 (ngrok http 8001) so that interactive buttons are accessible from external networks.
 
-Για την επιτυχή εκτέλεση του project, πρέπει να τηρούνται τα εξής:
-
-### 1. Περιβάλλον Λογισμικού
-* **Python 3.10+**: Απαιτείται εγκατάσταση σε εικονικό περιβάλλον (venv).
-* **Εξαρτήσεις**: Εγκαταστήστε τα απαραίτητα πακέτα: `fastapi`, `uvicorn`, `sqlmodel`, `httpx`.
-
-### 2. Υποδομή Δικτύου (ngrok)
-* **Verified Account**: Απαιτείται λογαριασμός στο **ngrok** και εγκατάσταση του Authtoken.
-* **Active Tunneling**: Το ngrok πρέπει να τρέχει στην πόρτα **8001** (`ngrok http 8001`) για να είναι προσβάσιμα τα διαδραστικά κουμπιά από εξωτερικά δίκτυα.
-
-### 3. Ρυθμίσεις Καναλιών Επικοινωνίας
-* **Discord**: Ένα ενεργό Webhook URL για την αποστολή μηνυμάτων με masked links.
-* **ntfy (Mobile)**: Εγγραφή σε topics (π.χ. `eva04`) για λήψη push notifications με **Action Buttons** στο κινητό.
-* **Email (Gmail)**: Χρήση **16-ψήφιου App Password** (όχι του κανονικού κωδικού) για την αποστολή διαδραστικών HTML emails.
+# 3. Communication Channel Settings
+Discord: An active Webhook URL for sending messages with masked links.
+ntfy (Mobile): Create a free Notify name (e.g., eva04) to receive push notifications with Action Buttons on mobile devices.
+Email (Gmail): Use of a 16-digit App Password (not the regular account password) for sending interactive HTML emails.
 
 ---
 ![Hackathon-Email](images/hackathon-email.gif)
